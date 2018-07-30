@@ -4,6 +4,7 @@ import './App.css';
 import Nav from './components/container/Nav';
 import ItemList from './components/container/ItemList';
 import {RecipeType} from './components/container/RecipeItem';
+import {IngredientType} from './components/container/IngredientItem';
 class App extends Component {
   render() {
     return (

@@ -7,24 +7,29 @@ class ItemList extends Component {
     this.state = {
       list: [],
       itemType: itemType,
-      newItem: {},
+      newItem: {}
     };
-    this.handleResetItemClick = this.handleResetItemClick.bind(this);
+    this.handleItemCreateClick = this.handleItemCreateClick.bind(this);
+    this.handleItemUpdateClick = this.handleItemUpdateClick.bind(this);
+    this.handleDeleteItemClick = this.handleDeleteItemClick.bind(this);
   };
-
-  handleResetItemClick(){
-    this.setState({newItem: {} });
-  };
-  handleItemSubmitClick(model){
+  handleItemCreateClick(createModel){
+    debugger;
     let list = this.state.list.slice();
-    list.unshift(model);
+    list.unshift(createModel);
     this.setState({list});
   };
-  handleItemUpdateClick(model){
-
+  handleItemUpdateClick(oldModel, updatedModel){
+    let list = this.state.list.slice(),
+    index = list.indexOf(oldModel);
+    list.splice(index, 1, updatedModel);
+    this.setState({list});
   };
-  handleDeleteItemClick(model){
-    console.log(`delete: ${model}`);
+  handleDeleteItemClick(deleteModel){
+    let list = this.state.list.slice(),
+    index = list.indexOf(deleteModel);
+    list.splice(index, 1);
+    this.setState({list});
   };
 
   render(){
@@ -33,16 +38,23 @@ class ItemList extends Component {
     return (
       <div className="list-container">
         <div className="list-item">
-          <ListItem model={this.state.newItem} componentMode="edit" />
-          <SubmitListItemButton text="Y" />
-          <DeleteListItemButton text="X" handleClick={this.handleResetItemClick} />
+          <ListItem 
+            model={this.state.newItem} 
+            componentMode="new"
+            handleCreate={this.handleItemCreateClick}
+            handleUpdate={this.handleItemUpdateClick}
+            handleDelete={this.handleDeleteItemClick}
+          />
         </div>
         {this.state.list.forEach((item)=>{
           return (
             <div className="list-item">
-              <ListItem model={item} />
-              <SubmitListItemButton text="Y" />
-              <DeleteListItemButton text="X" handleClick={this.handleDeleteItemClick.bind(this, item)} />
+              <ListItem 
+                model={item} 
+                handleCreate={this.handleItemCreateClick}
+                handleUpdate={this.handleItemUpdateClick}
+                handleDelete={this.handleDeleteItemClick}
+              />
             </div>
           );
         })}
